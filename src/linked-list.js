@@ -9,17 +9,18 @@ class LinkedList {
     append(data) {
 
         var node = new Node(data);
-            
-        if (this.length == 0 ) {
+
+        if (this.length === 0) {
             this._head = node;
             this._tail = node;
-        } else{
+        } else {
             this._tail.next = node;
             node.prev = this._tail;
             this._tail = node;
         }
-       
+
         this.length++;
+        return this;
     }
     head() {
         return this._head.data;
@@ -28,28 +29,34 @@ class LinkedList {
         return this._tail.data;
     }
     at(index) {
+        return this.nodeAt(index).data;
+    }
+
+    nodeAt(index) {
         var currentNode = this._head;
         var length = this.length;
         var count = 0;
-        var message = {failure: 'Failure: non-existent node in this list.'};
- 
+        var message = { failure: 'Failure: non-existent node in this list.' };
+
         if (length === 0 || index < 0 || index > length) {
             throw new Error(message.failure);
         }
-     
+
         while (count < index) {
             currentNode = currentNode.next;
             count++;
         }
-        return currentNode.data;
+        return currentNode;
     }
+
+
     insertAt(index, data) {
         var node = new Node(data);
         var currentNode = this._head;
         var length = this.length;
         var count = 1;
-        var message = {failure: 'Failure: non-existent node in this list.'};
- 
+        var message = { failure: 'Failure: non-existent node in this list.' };
+
         if (length === 0 || index < 0 || index > length) {
             throw new Error(message.failure);
         }
@@ -62,11 +69,12 @@ class LinkedList {
         node.next = this._tail;
         this._tail.prev = node;
         this.length++;
+        return this;
     }
     isEmpty() {
-        if (this.length == 0){
+        if (this.length == 0) {
             return true;
-        }else{
+        } else {
             return false;
         }
     }
@@ -74,51 +82,34 @@ class LinkedList {
         this.length = 0;
         this._head.data = null;
         this._tail.data = null;
+        return this;
     }
     deleteAt(index) {
-        var currentNode = this._head,
-        length = this.length,
-        count = 1,
-        message = {failure: 'Failure: non-existent node in this list.'},
-        beforeNodeToDelete = null,
-        nodeToDelete = null,
-        deletedNode = null;
- 
-        if (length === 0 || index < 1 || index > length) {
+        if (this.length === 0) {
+            return;
+        }
+        if (index < 0 || index >= this.length) {
+            var message = { failure: 'Failure: non-existent node in this list.' };
             throw new Error(message.failure);
         }
-         
-        if (index === 1) {
-            this._head = currentNode.next;
-        
-        
-            if (!this._head) {
-                this._head.prev = null;
-            
-            } else {
-                this._tail = null;
-                   }
-         
-        } else if (index === this.length) {
-            this._tail = this._tail.prev;
-            this._tail.next = null;
-       
+        if (this.length === 1) {
+            this._head = null;
+            this._tail = null;
+        } else if (index === 0) {
+            this.nodeAt(1).prev = null;
+            this._head = this.nodeAt(1);
+        } else if (index === this.length - 1) {
+            this.nodeAt(index - 1).next = null;
+            this._tail = this.nodeAt(index - 1);
         } else {
-            while (count < index) {
-                currentNode = currentNode.next;
-                count++;
-            }
-            beforeNodeToDelete = currentNode.prev;
-            nodeToDelete = currentNode;
-            var afterNodeToDelete = currentNode.next;
-     
-            beforeNodeToDelete.next = afterNodeToDelete;
-            afterNodeToDelete.prev = beforeNodeToDelete;
-            deletedNode = nodeToDelete;
-            nodeToDelete = null;
+            this.nodeAt(index - 1).next = this.nodeAt(index + 1);
+            this.nodeAt(index + 1).prev = this.nodeAt(index - 1);
+            
         }
-            this.length--;
+        this.length--;
+        return this;
     }
+
     reverse() {
         var node_buf = {
             data: null,
@@ -131,7 +122,7 @@ class LinkedList {
 
         var i = 0;
 
-        while (i < Math.floor(this.length / 2)) { 
+        while (i < Math.floor(this.length / 2)) {
             node_buf.data = node_tail.data;
             node_tail.data = node_head.data;
             node_head.data = node_buf.data;
@@ -139,22 +130,28 @@ class LinkedList {
             node_tail = node_tail.prev;
             i++;
         }
-
+        this.writeList();
         return this;
     }
-
+    writeList(){
+        var s = '';
+        for(var j=0; j<this.length; j++){
+            s = s + this.at(j) + ' ';
+        }
+        console.log(s + ' length = ' + this.length);
+    }
     indexOf(data) {
         var currentNode = this._head;
         var length = this.length;
         var count = 0;
-        var message = {failure: 'Failure: non-existent node in this list.'};
- 
+        var message = { failure: 'Failure: non-existent node in this list.' };
+
         if (length === 0 || data === null) {
             throw new Error(message.failure);
         }
         while (count < length) {
 
-            if (currentNode.data === data){
+            if (currentNode.data === data) {
                 return count;
             }
             currentNode = currentNode.next;
