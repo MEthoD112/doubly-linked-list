@@ -51,13 +51,33 @@ class LinkedList {
 
 
     insertAt(index, data) {
-        var node = new Node(data);
+
+        if (index > this.length || index < 0) {
+            var message = { failure: 'Failure: non-existent node in this list.' };
+            throw new Error(message.failure);
+        }
+        if (index === this.length) {
+            var node = new Node(data);
+            node.prev = this._tail;
+            this._tail = node;
+        } else {
+            var node = new Node(data);
+
+            this.nodeAt(index).data = data;
+        }
+        this.length++;
+
+
+
+
+
+        /*var node = new Node(data);
         var currentNode = this._head;
         var length = this.length;
         var count = 1;
         var message = { failure: 'Failure: non-existent node in this list.' };
 
-        if (length === 0 || index < 0 || index > length) {
+        if (index < 0 || index > length) {
             throw new Error(message.failure);
         }
         while (count < index) {
@@ -69,6 +89,7 @@ class LinkedList {
         node.next = this._tail;
         this._tail.prev = node;
         this.length++;
+        */
         return this;
     }
     isEmpty() {
@@ -93,8 +114,8 @@ class LinkedList {
             throw new Error(message.failure);
         }
         if (this.length === 1) {
-            this._head = null;
-            this._tail = null;
+            this._head.data = null;
+            this._tail.data = null;
         } else if (index === 0) {
             this.nodeAt(1).prev = null;
             this._head = this.nodeAt(1);
@@ -104,7 +125,7 @@ class LinkedList {
         } else {
             this.nodeAt(index - 1).next = this.nodeAt(index + 1);
             this.nodeAt(index + 1).prev = this.nodeAt(index - 1);
-            
+
         }
         this.length--;
         return this;
@@ -133,29 +154,39 @@ class LinkedList {
         this.writeList();
         return this;
     }
-    writeList(){
+    writeList() {
         var s = '';
-        for(var j=0; j<this.length; j++){
+        for (var j = 0; j < this.length; j++) {
             s = s + this.at(j) + ' ';
         }
         console.log(s + ' length = ' + this.length);
     }
     indexOf(data) {
-        var currentNode = this._head;
+        /*var currentNode = this._head;
         var length = this.length;
         var count = 0;
         var message = { failure: 'Failure: non-existent node in this list.' };
 
-        if (length === 0 || data === null) {
+       /* if (length === 0 || data === null) {
             throw new Error(message.failure);
-        }
-        while (count < length) {
+        }*/
+        /*while (count < length) {
 
             if (currentNode.data === data) {
                 return count;
             }
             currentNode = currentNode.next;
             count++;
+        }
+        return -1;*/
+        var node = this._head;
+        var i = -1;
+        while (node != null) {
+            i++;
+            if (data === node.data) {
+                return i;
+            }
+            node = node.next;
         }
         return -1;
     }
