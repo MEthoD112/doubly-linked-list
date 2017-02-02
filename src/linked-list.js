@@ -53,7 +53,7 @@ class LinkedList {
     insertAt(index, data) {
 
         if (index > this.length || index < 0) {
-            var message = { failure: 'Failure: non-existent node in this list.' };
+            var message = { failure: 'Failure: error.' };
             throw new Error(message.failure);
         }
         if (index === this.length) {
@@ -67,29 +67,6 @@ class LinkedList {
         }
         this.length++;
 
-
-
-
-
-        /*var node = new Node(data);
-        var currentNode = this._head;
-        var length = this.length;
-        var count = 1;
-        var message = { failure: 'Failure: non-existent node in this list.' };
-
-        if (index < 0 || index > length) {
-            throw new Error(message.failure);
-        }
-        while (count < index) {
-            currentNode = currentNode.next;
-            count++;
-        }
-        currentNode.next = node;
-        node.prev = currentNode;
-        node.next = this._tail;
-        this._tail.prev = node;
-        this.length++;
-        */
         return this;
     }
     isEmpty() {
@@ -162,23 +139,7 @@ class LinkedList {
         console.log(s + ' length = ' + this.length);
     }
     indexOf(data) {
-        /*var currentNode = this._head;
-        var length = this.length;
-        var count = 0;
-        var message = { failure: 'Failure: non-existent node in this list.' };
-
-       /* if (length === 0 || data === null) {
-            throw new Error(message.failure);
-        }*/
-        /*while (count < length) {
-
-            if (currentNode.data === data) {
-                return count;
-            }
-            currentNode = currentNode.next;
-            count++;
-        }
-        return -1;*/
+        
         var node = this._head;
         var i = -1;
         while (node != null) {
